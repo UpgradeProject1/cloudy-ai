@@ -1,0 +1,24 @@
+from flask import Flask, render_template, request, jsonify
+from ai.brain import ask_nova
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/chat", methods=["POST"])
+def chat():
+
+    data = request.get_json()
+
+    user_message = data["message"]
+
+    response = ask_nova(user_message)
+
+    return jsonify({
+        "response": response
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)

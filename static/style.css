@@ -1,0 +1,838 @@
+/* =========================
+   CLOUDY SKY SYSTEM
+========================= */
+
+html {
+
+    width: 100%;
+
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    background:
+        radial-gradient(circle at top,
+        #1e293b,
+        #020617);
+
+    transition: 0.5s;
+}
+
+
+/* =========================
+   SKY BACKGROUND CLOUDS
+========================= */
+
+.background-cloud {
+
+    position: fixed;
+
+    border-radius: 50%;
+
+    filter: blur(120px);
+
+    z-index: -1;
+
+    opacity: 0.18;
+
+    animation:
+        moveClouds 18s ease-in-out infinite;
+}
+
+.cloud1 {
+
+    width: 350px;
+    height: 350px;
+
+    background: #60a5fa;
+
+    top: 0%;
+    left: 5%;
+}
+
+.cloud2 {
+
+    width: 500px;
+    height: 500px;
+
+    background: #818cf8;
+
+    top: 40%;
+    right: 0%;
+
+    animation-delay: 4s;
+}
+
+.cloud3 {
+
+    width: 300px;
+    height: 300px;
+
+    background: #38bdf8;
+
+    bottom: 0%;
+    left: 35%;
+
+    animation-delay: 8s;
+}
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.layout {
+
+    display: flex;
+
+    height: 100vh;
+}
+
+
+/* =========================
+   SKY SIDEBAR
+========================= */
+
+.sidebar {
+
+    width: 320px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(15,23,42,0.72),
+            rgba(2,6,23,0.88)
+        );
+
+    backdrop-filter: blur(24px);
+
+    border-right:
+        1px solid rgba(255,255,255,0.05);
+
+    overflow-y: auto;
+
+    position: relative;
+}
+
+
+/* STARS */
+
+.sidebar::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        radial-gradient(white 1px, transparent 1px);
+
+    background-size: 50px 50px;
+
+    opacity: 0.06;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.sidebar h2 {
+
+    text-align: center;
+
+    font-size: 34px;
+
+    margin-bottom: 25px;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 20px rgba(96,165,250,0.45);
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.sidebar button,
+button {
+
+    background:
+        linear-gradient(
+            135deg,
+            #60a5fa,
+            #818cf8
+        );
+
+    border: none;
+
+    color: white;
+
+    padding: 14px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition: 0.25s;
+}
+
+.sidebar button:hover,
+button:hover {
+
+    transform:
+        scale(1.03);
+
+    opacity: 0.92;
+}
+
+
+/* =========================
+   CLOUD LIST
+========================= */
+
+#conversation-list {
+
+    margin-top: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+/* =========================
+   CLOUDS
+========================= */
+
+.conversation-item {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 18px;
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+    backdrop-filter: blur(18px);
+
+    cursor: pointer;
+
+    animation:
+        floatCloud 5s ease-in-out infinite;
+
+    transition: 0.35s;
+}
+
+
+/* CLOUD GLOW */
+
+.conversation-item::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -30%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.18),
+            transparent 70%
+        );
+
+    opacity: 0;
+
+    transition: 0.35s;
+}
+
+.conversation-item:hover::before {
+
+    opacity: 1;
+}
+
+
+/* CLOUD HOVER */
+
+.conversation-item:hover {
+
+    transform:
+        translateY(-6px)
+        scale(1.04);
+}
+
+
+/* CLOUD TEXT */
+
+.conversation-item span {
+
+    flex: 1;
+
+    z-index: 2;
+}
+
+
+/* =========================
+   CLOUD COLORS
+========================= */
+
+.cloud-blue {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(96,165,250,0.35),
+            rgba(59,130,246,0.12)
+        );
+
+    box-shadow:
+        0 8px 35px rgba(96,165,250,0.22);
+}
+
+.cloud-purple {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(168,85,247,0.35),
+            rgba(126,34,206,0.12)
+        );
+
+    box-shadow:
+        0 8px 35px rgba(168,85,247,0.22);
+}
+
+.cloud-green {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(74,222,128,0.35),
+            rgba(22,163,74,0.12)
+        );
+
+    box-shadow:
+        0 8px 35px rgba(74,222,128,0.22);
+}
+
+.cloud-pink {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(244,114,182,0.35),
+            rgba(219,39,119,0.12)
+        );
+
+    box-shadow:
+        0 8px 35px rgba(244,114,182,0.22);
+}
+
+.cloud-cyan {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(34,211,238,0.35),
+            rgba(8,145,178,0.12)
+        );
+
+    box-shadow:
+        0 8px 35px rgba(34,211,238,0.22);
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+.delete-btn {
+
+    background: transparent;
+
+    border: none;
+
+    color: rgba(255,255,255,0.65);
+
+    font-size: 16px;
+
+    z-index: 2;
+}
+
+.delete-btn:hover {
+
+    color: white;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main-content {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+#chat-box {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding-right: 6px;
+}
+
+
+/* =========================
+   MESSAGES
+========================= */
+
+.user-message,
+.bot-message {
+
+    margin-bottom: 18px;
+
+    padding: 18px;
+
+    border-radius: 26px;
+
+    backdrop-filter: blur(14px);
+
+    animation: fadeIn 0.25s ease;
+}
+
+.user-message {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(96,165,250,0.22),
+            rgba(129,140,248,0.16)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.06);
+}
+
+.bot-message {
+
+    background:
+        rgba(255,255,255,0.06);
+
+    border:
+        1px solid rgba(255,255,255,0.05);
+}
+
+
+/* =========================
+   MESSAGE HEADER
+========================= */
+
+.message-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    font-size: 13px;
+
+    opacity: 0.7;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.input-area {
+
+    margin-top: 15px;
+}
+
+.bottom-bar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border:
+        1px solid rgba(255,255,255,0.06);
+
+    border-radius: 999px;
+
+    padding: 12px 16px;
+
+    backdrop-filter: blur(18px);
+}
+
+
+/* FILE INPUT */
+
+#image-input {
+
+    display: none;
+}
+
+
+/* UPLOAD BUTTON */
+
+.upload-btn {
+
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.upload-btn:hover {
+
+    background:
+        rgba(255,255,255,0.14);
+
+    transform:
+        scale(1.08);
+}
+
+
+/* TEXT INPUT */
+
+input[type="text"] {
+
+    flex: 1;
+
+    background: transparent;
+
+    border: none;
+
+    outline: none;
+
+    color: white;
+
+    font-size: 16px;
+}
+
+input::placeholder {
+
+    color: rgba(255,255,255,0.5);
+}
+
+
+/* LINKS */
+
+a {
+
+    color: #93c5fd;
+}
+
+
+/* =========================
+   STORM MODE
+========================= */
+
+.storm-mode .background-cloud {
+
+    opacity: 0.38;
+
+    filter: blur(140px);
+
+    animation-duration: 5s;
+}
+
+.storm-mode {
+
+    background:
+        radial-gradient(circle at top,
+        #111827,
+        #000000);
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes moveClouds {
+
+    0% {
+
+        transform:
+            translateY(0px)
+            translateX(0px);
+    }
+
+    50% {
+
+        transform:
+            translateY(-30px)
+            translateX(15px);
+    }
+
+    100% {
+
+        transform:
+            translateY(0px)
+            translateX(0px);
+    }
+}
+
+@keyframes floatCloud {
+
+    0% {
+
+        transform: translateY(0px);
+    }
+
+    50% {
+
+        transform: translateY(-5px);
+    }
+
+    100% {
+
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(6px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0px);
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .layout {
+
+        flex-direction: column;
+    }
+
+    .sidebar {
+
+        width: 100%;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.06);
+    }
+
+    .main-content {
+
+        padding: 12px;
+    }
+}
+
+/* ACTIVE CLOUD */
+
+.active-cloud {
+
+    transform:
+        scale(1.06)
+        translateY(-4px);
+
+    box-shadow:
+        0 0 45px rgba(255,255,255,0.18);
+
+    animation:
+        activePulse 2s ease-in-out infinite;
+}
+
+@keyframes activePulse {
+
+    0% {
+
+        transform:
+            scale(1.06)
+            translateY(-4px);
+    }
+
+    50% {
+
+        transform:
+            scale(1.09)
+            translateY(-6px);
+    }
+
+    100% {
+
+        transform:
+            scale(1.06)
+            translateY(-4px);
+    }
+}
+
+/* =========================
+   SKY MODES
+========================= */
+
+.day-mode {
+
+    background:
+        radial-gradient(circle at top,
+        #60a5fa,
+        #0f172a);
+}
+
+.sunset-mode {
+
+    background:
+        radial-gradient(circle at top,
+        #fb7185,
+        #7c3aed,
+        #020617);
+}
+
+.night-mode {
+
+    background:
+        radial-gradient(circle at top,
+        #1e293b,
+        #020617);
+}
+
+/* =========================
+   LIGHTNING EFFECT
+========================= */
+
+.storm-mode::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        rgba(255,255,255,0.05);
+
+    opacity: 0;
+
+    animation:
+        lightningFlash 1.5s infinite;
+
+    z-index: 999;
+}
+
+@keyframes lightningFlash {
+
+    0% {
+
+        opacity: 0;
+    }
+
+    8% {
+
+        opacity: 0.18;
+    }
+
+    12% {
+
+        opacity: 0;
+    }
+
+    30% {
+
+        opacity: 0;
+    }
+
+    32% {
+
+        opacity: 0.12;
+    }
+
+    36% {
+
+        opacity: 0;
+    }
+
+    100% {
+
+        opacity: 0;
+    }
+}
