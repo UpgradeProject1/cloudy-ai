@@ -5,116 +5,57 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Cloudy AI</title>
+    <title>☁️ Cloudy AI</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet"
+          href="/static/style.css">
 
 </head>
 
 <body>
 
-<div class="background-cloud cloud1"></div>
-<div class="background-cloud cloud2"></div>
-<div class="background-cloud cloud3"></div>
+    <!-- BACKGROUND -->
 
-<div class="layout">
+    <div class="sky"></div>
 
-    <div class="sidebar">
+    <div id="stars"></div>
 
-        <h2>☁️ Cloudy</h2>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
 
-        <button onclick="createChat()">
-            + Nouveau cloud
-        </button>
+    <!-- MAIN -->
 
-        <div id="conversation-list">
+    <div class="container">
 
-            {% for conv in conversations %}
+        <h1>☁️ Cloudy AI</h1>
 
-                {% set title = conv.title.lower() %}
-
-                {% if "python" in title or "code" in title %}
-                    {% set cloud_type = "cloud-blue" %}
-
-                {% elif "jeu" in title or "game" in title or "steam" in title %}
-                    {% set cloud_type = "cloud-purple" %}
-
-                {% elif "music" in title or "song" in title %}
-                    {% set cloud_type = "cloud-pink" %}
-
-                {% elif "school" in title or "math" in title or "école" in title %}
-                    {% set cloud_type = "cloud-green" %}
-
-                {% else %}
-                    {% set cloud_type = "cloud-cyan" %}
-                {% endif %}
-
-                <div class="conversation-item {{ cloud_type }}">
-
-                    <span
-                        onclick="loadChat('{{ conv.id }}')"
-                    >
-                        ☁️ {{ conv.title }}
-                    </span>
-
-                    <button
-                        class="delete-btn"
-                        onclick="deleteChat('{{ conv.id }}')"
-                    >
-                        ✕
-                    </button>
-
-                </div>
-
-            {% endfor %}
-
-        </div>
-
-    </div>
-
-    <div class="main-content">
+        <p class="subtitle">
+            Intelligence artificielle cosmique 🌌
+        </p>
 
         <div id="chat-box"></div>
 
         <div class="input-area">
 
-            <div class="bottom-bar">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Parle à Cloudy..."
+            >
 
-                <label
-                    for="image-input"
-                    class="upload-btn"
-                >
-                    ＋
-                </label>
-
-                <input
-                    type="file"
-                    id="image-input"
-                    accept="image/*"
-                >
-
-                <input
-                    type="text"
-                    id="user-input"
-                    placeholder="Parle avec Cloudy..."
-                >
-
-                <button onclick="sendMessage()">
-                    ➜
-                </button>
-
-            </div>
+            <button onclick="sendMessage()">
+                Envoyer
+            </button>
 
         </div>
 
     </div>
 
-</div>
-
-<script src="/static/script.js"></script>
+    <script src="/static/script.js"></script>
 
 </body>
-
 </html>

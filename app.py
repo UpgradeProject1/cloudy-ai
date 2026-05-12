@@ -1,107 +1,92 @@
-from flask import Flask, render_template, request, jsonify, Response
-from ai.brain import ask_nova_stream
+from flask import Flask, render_template, request, jsonify
 import json
 import os
-import uuid
+import random
+from datetime import datetime
 
 app = Flask(__name__)
 
-NOTES_FILE = "data/notes.json"
-TODO_FILE = "data/todos.json"
+DATA_FOLDER = "data"
 
-CONVERSATIONS_FOLDER = "data/conversations"
+CHAT_HISTORY_FILE = f"{DATA_FOLDER}/chat_history.json"
+MEMORY_FILE = f"{DATA_FOLDER}/memory.json"
 
+os.makedirs(DATA_FOLDER, exist_ok=True)
 
-def load_json(file):
+for file in [CHAT_HISTORY_FILE, MEMORY_FILE]:
 
     if not os.path.exists(file):
-        return []
 
-    with open(file, "r") as f:
+        with open(file, "w") as f:
 
-        try:
-            return json.load(f)
-
-        except:
-            return []
+            json.dump([], f)
 
 
-def save_json(file, data):
+def load_json(path):
 
-    with open(file, "w") as f:
+    with open(path, "r") as f:
+
+        return json.load(f)
+
+
+def save_json(path, data):
+
+    with open(path, "w") as f:
 
         json.dump(data, f, indent=4)
 
 
-def get_conversations():
+def cloudy_ai(message):
 
-    conversations = []
+    msg = message.lower()
 
-    for file in os.listdir(CONVERSATIONS_FOLDER):
+    greetings = [
+        "Salut 😄☁️",
+        "Hello humain 🌌",
+        "Cloudy est connecté ☁️",
+        "Je suis là 😎"
+    ]
 
-        if file.endswith(".json"):
+    if "bonjour" in msg or "salut" in msg:
 
-            path = os.path.join(
-                CONVERSATIONS_FOLDER,
-                file
-            )
+        return random.choice(greetings)
 
-            data = load_json(path)
+    if "ça va" in msg:
 
-            title = "Nouvelle conversation"
+        return "Toujours dans les nuages 😄☁️"
 
-            if len(data) > 0:
+    if "qui es tu" in msg:
 
-                title = data[0]["user"][:30]
+        return "Je suis Cloudy AI, une intelligence artificielle cosmique 🌌"
 
-            conversations.append({
-                "id": file.replace(".json", ""),
-                "title": title
-            })
+    if "heure" in msg:
 
-    return conversations
+        return f"Il est {datetime.now().strftime('%H:%M:%S')} ⏰"
+
+    if "date" in msg:
+
+        return f"Aujourd'hui : {datetime.now().strftime('%d/%m/%Y')} 📅"
+
+    if "merci" in msg:
+
+        return "Avec plaisir 😄"
+
+    smart_answers = [
+
+        "Intéressant 🤔",
+        "Je réfléchis dans le cloud ☁️",
+        "Analyse cosmique en cours 🌌",
+        "Cloudy traite ta demande 😎",
+        "Hmmmm 😄"
+    ]
+
+    return random.choice(smart_answers)
 
 
 @app.route("/")
 def home():
 
-    notes = load_json(NOTES_FILE)
-
-    todos = load_json(TODO_FILE)
-
-    conversations = get_conversations()
-
-    return render_template(
-        "index.html",
-        notes=notes,
-        todos=todos,
-        conversations=conversations
-    )
-
-
-@app.route("/new_chat")
-def new_chat():
-
-    chat_id = str(uuid.uuid4())
-
-    save_json(
-        f"{CONVERSATIONS_FOLDER}/{chat_id}.json",
-        []
-    )
-
-    return jsonify({
-        "chat_id": chat_id
-    })
-
-
-@app.route("/load_chat/<chat_id>")
-def load_chat(chat_id):
-
-    path = f"{CONVERSATIONS_FOLDER}/{chat_id}.json"
-
-    history = load_json(path)
-
-    return jsonify(history)
+    return render_template("index.html")
 
 
 @app.route("/chat", methods=["POST"])
@@ -109,50 +94,29 @@ def chat():
 
     data = request.get_json()
 
-    message = data["message"]
+    user_message = data.get("message")
 
-    chat_id = data["chat_id"]
+    response = cloudy_ai(user_message)
 
-    path = f"{CONVERSATIONS_FOLDER}/{chat_id}.json"
+    history = load_json(CHAT_HISTORY_FILE)
 
-    history = load_json(path)
+    history.append({
 
-    def generate():
+        "time": str(datetime.now()),
 
-        full_response = ""
+        "user": user_message,
 
-        for chunk in ask_nova_stream(message):
+        "cloudy": response
+    })
 
-            full_response += chunk
+    save_json(CHAT_HISTORY_FILE, history)
 
-            yield chunk
+    return jsonify({
 
-        history.append({
-            "user": message,
-            "nova": full_response
-        })
-
-        save_json(path, history)
-
-    return Response(generate(), mimetype="text/plain")
-
-
-@app.route("/delete_chat/<chat_id>")
-def delete_chat(chat_id):
-
-    path = f"{CONVERSATIONS_FOLDER}/{chat_id}.json"
-
-    if os.path.exists(path):
-
-        os.remove(path)
-
-    return "deleted"
+        "response": response
+    })
 
 
 if __name__ == "__main__":
 
-    app.run(
-        host="0.0.0.0",
-        port=5000,
-        debug=True
-    )
+    app.run(debug=True)

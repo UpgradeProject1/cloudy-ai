@@ -1,48 +1,68 @@
-import requests
-import json
+def detect_language(message):
+
+    french_words = [
+        "bonjour",
+        "salut",
+        "comment",
+        "merci",
+        "oui"
+    ]
+
+    english_words = [
+        "hello",
+        "hi",
+        "how",
+        "thanks",
+        "yes"
+    ]
+
+    message = message.lower()
+
+    french_score = 0
+    english_score = 0
+
+    for word in french_words:
+        if word in message:
+            french_score += 1
+
+    for word in english_words:
+        if word in message:
+            english_score += 1
+
+    if english_score > french_score:
+        return "english"
+
+    return "french"
 
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+def ask_ai(message):
 
-MODEL = "llama3"
+    language = detect_language(message)
 
+    msg = message.lower()
 
-def ask_nova_stream(message):
+    if language == "french":
 
-    prompt = f"""
-You are Cloudy, a futuristic AI assistant.
+        if "bonjour" in msg or "salut" in msg:
+            return "Salut 👋"
 
-IMPORTANT:
-- Reply in the SAME language as the user.
-- Be natural and intelligent.
-- Be friendly and modern.
-- Keep answers clean and readable.
+        if "comment ça va" in msg:
+            return "Je vais bien 😄"
 
-User:
-{message}
+        if "ton nom" in msg:
+            return "Je suis Cloudy AI ☁️"
 
-Cloudy:
-"""
+        return "Je parle français 🇫🇷"
 
-    response = requests.post(
+    else:
 
-        OLLAMA_URL,
+        if "hello" in msg or "hi" in msg:
+            return "Hello 👋"
 
-        json={
-            "model": MODEL,
-            "prompt": prompt,
-            "stream": True
-        },
+        if "how are you" in msg:
+            return "I'm doing great 😄"
 
-        stream=True
-    )
+        if "your name" in msg:
+            return "I am Cloudy AI ☁️"
 
-    for line in response.iter_lines():
-
-        if line:
-
-            data = json.loads(line)
-
-            if "response" in data:
-
-                yield data["response"]
+        return "I speak English 🇬🇧"
