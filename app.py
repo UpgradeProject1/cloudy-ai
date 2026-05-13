@@ -9,31 +9,28 @@ app = Flask(__name__)
 DATA_FOLDER = "data"
 
 CHAT_HISTORY_FILE = f"{DATA_FOLDER}/chat_history.json"
-MEMORY_FILE = f"{DATA_FOLDER}/memory.json"
 
 os.makedirs(DATA_FOLDER, exist_ok=True)
 
-for file in [CHAT_HISTORY_FILE, MEMORY_FILE]:
+if not os.path.exists(CHAT_HISTORY_FILE):
 
-    if not os.path.exists(file):
+    with open(CHAT_HISTORY_FILE, "w") as f:
 
-        with open(file, "w") as f:
-
-            json.dump([], f)
+        json.dump([], f)
 
 
-def load_json(path):
+def load_history():
 
-    with open(path, "r") as f:
+    with open(CHAT_HISTORY_FILE, "r") as f:
 
         return json.load(f)
 
 
-def save_json(path, data):
+def save_history(history):
 
-    with open(path, "w") as f:
+    with open(CHAT_HISTORY_FILE, "w") as f:
 
-        json.dump(data, f, indent=4)
+        json.dump(history, f, indent=4)
 
 
 def cloudy_ai(message):
@@ -41,10 +38,14 @@ def cloudy_ai(message):
     msg = message.lower()
 
     greetings = [
+
         "Salut 😄☁️",
-        "Hello humain 🌌",
-        "Cloudy est connecté ☁️",
-        "Je suis là 😎"
+
+        "Hello 🌌",
+
+        "Cloudy est là ☁️",
+
+        "Yo 😎"
     ]
 
     if "bonjour" in msg or "salut" in msg:
@@ -53,11 +54,7 @@ def cloudy_ai(message):
 
     if "ça va" in msg:
 
-        return "Toujours dans les nuages 😄☁️"
-
-    if "qui es tu" in msg:
-
-        return "Je suis Cloudy AI, une intelligence artificielle cosmique 🌌"
+        return "Toujours dans les nuages ☁️"
 
     if "heure" in msg:
 
@@ -73,11 +70,13 @@ def cloudy_ai(message):
 
     smart_answers = [
 
-        "Intéressant 🤔",
-        "Je réfléchis dans le cloud ☁️",
         "Analyse cosmique en cours 🌌",
-        "Cloudy traite ta demande 😎",
-        "Hmmmm 😄"
+
+        "Cloudy réfléchit ☁️",
+
+        "Hmmmm 😄",
+
+        "Intéressant 🤔"
     ]
 
     return random.choice(smart_answers)
@@ -94,11 +93,11 @@ def chat():
 
     data = request.get_json()
 
-    user_message = data.get("message")
+    user_message = data.get("message", "")
 
     response = cloudy_ai(user_message)
 
-    history = load_json(CHAT_HISTORY_FILE)
+    history = load_history()
 
     history.append({
 
@@ -109,7 +108,7 @@ def chat():
         "cloudy": response
     })
 
-    save_json(CHAT_HISTORY_FILE, history)
+    save_history(history)
 
     return jsonify({
 
@@ -119,4 +118,4 @@ def chat():
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

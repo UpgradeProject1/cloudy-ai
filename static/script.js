@@ -1,7 +1,3 @@
-/* =========================
-   SEND MESSAGE
-========================= */
-
 async function sendMessage() {
 
     const input =
@@ -44,10 +40,6 @@ async function sendMessage() {
 }
 
 
-/* =========================
-   ADD MESSAGE
-========================= */
-
 function addMessage(text, sender) {
 
     const chatBox =
@@ -70,10 +62,6 @@ function addMessage(text, sender) {
 }
 
 
-/* =========================
-   ENTER KEY
-========================= */
-
 document
     .getElementById("user-input")
     .addEventListener(
@@ -87,10 +75,6 @@ document
         }
     );
 
-
-/* =========================
-   STARS SYSTEM
-========================= */
 
 const starsContainer =
     document.getElementById("stars");
