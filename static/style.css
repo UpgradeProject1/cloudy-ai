@@ -1,269 +1,117 @@
 body {
-
     margin: 0;
-
     padding: 0;
-
     overflow: hidden;
-
-    font-family: Arial, sans-serif;
-
+    font-family: 'Segoe UI', sans-serif;
     color: white;
-
-    background:
-        linear-gradient(
-            to bottom,
-            #050816,
-            #0b1026
-        );
+    background: radial-gradient(circle at top, #0b1a3a, #050816);
 }
 
+/* Glow background */
 .sky {
-
     position: fixed;
-
     inset: 0;
-
-    background:
-        radial-gradient(
-            circle at top,
-            rgba(80,120,255,0.15),
-            transparent 60%
-        );
-
+    background: radial-gradient(circle at 30% 20%, rgba(120,180,255,0.2), transparent 60%);
     z-index: -5;
 }
 
+/* Container glass */
 .container {
-
     width: 90%;
-
     max-width: 900px;
-
     margin: auto;
-
     margin-top: 40px;
-
-    background:
-        rgba(255,255,255,0.05);
-
-    backdrop-filter: blur(10px);
-
+    padding: 25px;
     border-radius: 25px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 0 30px rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
 }
 
+/* Title */
 h1 {
-
     text-align: center;
-
-    color: #8ecfff;
-
-    font-size: 42px;
+    font-size: 44px;
+    background: linear-gradient(90deg, #7dd3fc, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.subtitle {
-
-    text-align: center;
-
-    opacity: 0.7;
-
-    margin-bottom: 20px;
-}
-
+/* Chat */
 #chat-box {
-
     height: 500px;
-
     overflow-y: auto;
-
     padding: 10px;
-
-    margin-bottom: 20px;
 }
 
 .message {
-
     padding: 14px;
-
-    border-radius: 15px;
-
-    margin: 12px 0;
-
-    max-width: 80%;
+    border-radius: 18px;
+    margin: 10px 0;
+    max-width: 75%;
+    animation: fadeIn 0.3s ease;
 }
 
 .user {
-
     background: #2563eb;
-
     margin-left: auto;
 }
 
 .cloudy {
-
-    background:
-        rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.12);
 }
 
+/* Input */
 .input-area {
-
     display: flex;
-
     gap: 10px;
 }
 
 input {
-
     flex: 1;
-
     padding: 14px;
-
-    border: none;
-
     border-radius: 12px;
-
+    border: none;
     outline: none;
-
-    font-size: 16px;
 }
 
 button {
-
-    padding: 14px 20px;
-
-    border: none;
-
+    padding: 14px 18px;
     border-radius: 12px;
-
-    background: #60a5fa;
-
+    border: none;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
     color: white;
-
     cursor: pointer;
-
-    font-size: 16px;
-
-    transition: 0.3s;
 }
 
 button:hover {
-
-    background: #3b82f6;
-
     transform: scale(1.05);
 }
 
-.cloud {
-
-    position: fixed;
-
-    width: 300px;
-
-    height: 100px;
-
-    background:
-        rgba(255,255,255,0.08);
-
-    border-radius: 100px;
-
-    filter: blur(20px);
-
-    z-index: -2;
-
-    animation:
-        moveClouds linear infinite;
-}
-
-.cloud1 {
-
-    top: 10%;
-
-    animation-duration: 60s;
-}
-
-.cloud2 {
-
-    top: 35%;
-
-    width: 400px;
-
-    animation-duration: 90s;
-}
-
-.cloud3 {
-
-    top: 70%;
-
-    width: 350px;
-
-    animation-duration: 75s;
-}
-
-@keyframes moveClouds {
-
-    from {
-
-        transform:
-            translateX(-400px);
-    }
-
-    to {
-
-        transform:
-            translateX(140vw);
-    }
-}
-
+/* Stars */
 #stars {
-
     position: fixed;
-
     inset: 0;
-
-    overflow: hidden;
-
-    pointer-events: none;
-
     z-index: -1;
 }
 
 .star {
-
     position: absolute;
-
     width: 2px;
-
     height: 2px;
-
     background: white;
-
     border-radius: 50%;
-
-    opacity: 0.7;
-
-    animation:
-        twinkle linear infinite;
+    animation: twinkle 3s infinite;
 }
 
+/* Animations */
 @keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
 
-    0% {
-
-        opacity: 0.2;
-    }
-
-    50% {
-
-        opacity: 1;
-    }
-
-    100% {
-
-        opacity: 0.2;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
